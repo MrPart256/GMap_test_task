@@ -1,0 +1,21 @@
+CREATE DATABASE TaskDB;
+USE TaskDB;
+CREATE TABLE [dbo].[Database](
+	[Id] [nvarchar](36) NOT NULL,
+	[Lat] [float] NOT NULL,
+	[Lng] [float] NOT NULL,
+	[Vehicle] [nvarchar](30) NOT NULL
+) ON [PRIMARY]
+
+INSERT [dbo].[Database] ([Id], [Lat], [Lng], [Vehicle]) VALUES (N'd565bbc1-7c08-4c46-91fb-de720f677eff', 50.06419173665909, 64.6875, N'vehicle')
+INSERT [dbo].[Database] ([Id], [Lat], [Lng], [Vehicle]) VALUES (N'a31ed483-4a8e-4c3c-b511-b37306ea51e3', 69.287256951678856, 86.8359375, N'vehicle')
+INSERT [dbo].[Database] ([Id], [Lat], [Lng], [Vehicle]) VALUES (N'1d830f32-2d70-45bf-b3ef-9b91cc814b12', 62.431074232920906, 119.53125, N'vehicle')
+INSERT [dbo].[Database] ([Id], [Lat], [Lng], [Vehicle]) VALUES (N'74f85a15-a6b9-4a26-a21e-5f2f77cf2e08', 65.802776393402382, 71.3671875, N'vehicle')
+INSERT [dbo].[Database] ([Id], [Lat], [Lng], [Vehicle]) VALUES (N'189dd5e9-9d91-4182-b463-6a2ff7872afa', 58.995311187950932, -124.1015625, N'vehicle')
+INSERT [dbo].[Database] ([Id], [Lat], [Lng], [Vehicle]) VALUES (N'8611d1c8-d2e9-4062-b921-10525eafd912', 66.231457478625728, 59.4140625, N'Vehicle')
+INSERT [dbo].[Database] ([Id], [Lat], [Lng], [Vehicle]) VALUES (N'80b45cf9-8c32-434c-9b5a-7aba4f59d857', 57.326521225217078, 118.828125, N'Vehicle')
+INSERT [dbo].[Database] ([Id], [Lat], [Lng], [Vehicle]) VALUES (N'91458cd4-7c1c-4971-a437-8d1747036672', -25.799891182088331, 135.703125, N'Vehicle')
+INSERT [dbo].[Database] ([Id], [Lat], [Lng], [Vehicle]) VALUES (N'934b1420-05d1-4e1a-9448-d802f661be10', 48.224672649565193, 41.1328125, N'Vehicle')
+INSERT [dbo].[Database] ([Id], [Lat], [Lng], [Vehicle]) VALUES (N'244cad42-18e1-41af-8a52-6830cf4419db', 54.367758524068385, 71.7626953125, N'Vehicle')
+INSERT [dbo].[Database] ([Id], [Lat], [Lng], [Vehicle]) VALUES (N'1ca4140a-9ea9-4cf9-9a32-70098a9eee0a', 9.4490618268814188, 26.015625, N'Vehicle')
+
