@@ -10,45 +10,75 @@ namespace TestTask
     internal class DB
     {
         
-        private const string connectionString = "Data Source=DESKTOP-IIB45SI\\SQLEXPRESS;Integrated Security=True";
-        private static SqlConnection conn = new SqlConnection(connectionString);
-      
+        private const string connectionString = "Data Source=DESKTOP-IIB45SI\\SQLEXPRESS;Initial Catalog=TaskDB;Integrated Security=True";
+
 
 
         public static void AddMarker(Marker marker)
         {
-            
-            string request = $"INSERT INTO Table (Id,Lat,Lng,Vehicle) VALUES(@Id,@Lat,@Lng,@Vehicle)";
-            Console.WriteLine(request);
-            using (SqlCommand command = new SqlCommand(request, conn))
+            SqlConnection conn = new SqlConnection(connectionString);
+           
+            SqlCommand command = new SqlCommand("INSERT INTO [Database] (Id, Lat, Lng, Vehicle) VALUES(@Id,@Lat,@Lng,@Vehicle)", conn);
+            command.Parameters.AddWithValue("@Id", marker.id);
+            command.Parameters.AddWithValue("@Lat", marker.lat);
+            command.Parameters.AddWithValue("@Lng", marker.lng);
+            command.Parameters.AddWithValue("@Vehicle", marker.vehicle);
+
+            try
             {
-                command.Parameters.AddWithValue("@Id", marker.id);
-                command.Parameters.AddWithValue("@Lat", marker.lat);
-                command.Parameters.AddWithValue("@Lng", marker.lng);
-                command.Parameters.AddWithValue("@Vehicle", marker.vehicle);
-
                 conn.Open();
-                int result = command.ExecuteNonQuery();
-
-                // Check Error
-                if (result < 0)
-                    Console.WriteLine("Error inserting data into Database!");
+                command.ExecuteNonQuery();
             }
-            conn.Close();
+            catch (SqlException e)
+            {
+                Console.WriteLine("Exception " + e.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public static void UpdateMarkerPosition(Marker marker)
+        {
+            SqlConnection conn = new SqlConnection(connectionString);
+
+
+            SqlCommand command = new SqlCommand("UPDATE [Database] set Lat=@Lat, Lng=@Lng WHERE Id=@Id", conn);
+
+            command.Parameters.AddWithValue("@Lat", marker.lat);
+            command.Parameters.AddWithValue("@Lng", marker.lng);
+            command.Parameters.AddWithValue("@Id", marker.id);
+
+            try
+            {
+                conn.Open();
+                command.ExecuteNonQuery();
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine("Exception " + e.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
         }
 
         public static List<Marker> GetMarkers()
         {
-            string request = "SELECT * FROM Table";
+            SqlConnection conn = new SqlConnection(connectionString);
+            conn.Open();
             List<Marker> markers = new List<Marker>();
-            SqlCommand cmd = new SqlCommand(request, conn);
-            SqlDataReader reader = cmd.ExecuteReader();
+            SqlCommand command = new SqlCommand("SELECT * FROM [Database]", conn);
+            SqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
                 Marker marker = new Marker();
                 marker.id = reader.GetString(0);
-                marker.lat = (double)reader.GetDecimal(1);
-                marker.lng = (double)reader.GetDecimal(2);
+                marker.lat = (double)reader.GetValue(1);
+                marker.lng = (double)reader.GetValue(2);
                 marker.vehicle = reader.GetString(3);
                 markers.Add(marker);
             }

@@ -21,6 +21,7 @@ namespace TestTask
         private GMapOverlay markers = new GMapOverlay("markers");
         private GMapMarker currentMarker;
 
+
         private bool isHoveringMarker = false;
         private bool isDragging = false;
 
@@ -46,8 +47,9 @@ namespace TestTask
             gMapControl1.DragButton = MouseButtons.Left;
             gMapControl1.ShowCenter = false;
             
+
             gMapControl1.Overlays.Add(markers);
-            //List<Marker> markersList = DB.GetMarkers();
+            RestoreMarkers(DB.GetMarkers());
         }
 
         private void RestoreMarkers(List<Marker> markersList)
@@ -65,8 +67,7 @@ namespace TestTask
         private void AddMarker(PointLatLng pointClick, MouseEventArgs e)
         {
             GMarkerGoogle gMarker = GMarker(pointClick, GMarkerGoogleType.blue);
-            Marker marker = new Marker { id = gMarker.Tag.ToString(), lat = gMarker.Position.Lat, lng = gMarker.Position.Lng, vehicle = "vehicle" };
-            Console.WriteLine(marker.id);
+            Marker marker = new Marker { id = gMarker.Tag.ToString(), lat = gMarker.Position.Lat, lng = gMarker.Position.Lng, vehicle = gMarker.ToolTipText };
             DB.AddMarker(marker);
             markers.Markers.Add(gMarker);
         }
@@ -93,8 +94,11 @@ namespace TestTask
         }
         private void StopDragNDrop(object sender, MouseEventArgs e)
         {
-            isDragging = false;
-           
+            if (isDragging)
+            {
+                DB.UpdateMarkerPosition(new Marker { id = currentMarker.Tag.ToString(), lat = currentMarker.Position.Lat, lng = currentMarker.Position.Lng, vehicle = currentMarker.ToolTipText });
+                isDragging = false;
+            }
         }
        
 
@@ -111,7 +115,7 @@ namespace TestTask
         private void NotHoveringMarker(GMapMarker item)
         {
             if (isDragging)
-            {
+            {  
                 return;
             }
            
@@ -123,6 +127,7 @@ namespace TestTask
         private GMarkerGoogle GMarker(PointLatLng latLng, GMarkerGoogleType markerType)
         {
             GMarkerGoogle marker = new GMarkerGoogle(latLng, markerType);
+            marker.ToolTipText = "Vehicle";
             marker.Tag = Guid.NewGuid().ToString();
             return marker;
         }
